@@ -54,8 +54,6 @@ public class ActionScribeHandler implements Scribe.Iface {
             logger.log(Level.WARNING, "Throttling, too many messages in flight", inFlightMsgs);
             return ResultCode.TRY_LATER;
         }
-        long before = System.currentTimeMillis();
-        logger.info(before + " Processing: " + messages.size());
         this.inFlightMsgs += messages.size();
         try {
             this.action(messages);
@@ -65,8 +63,6 @@ public class ActionScribeHandler implements Scribe.Iface {
         } finally {
             this.inFlightMsgs -= messages.size();
         }
-        long delta = System.currentTimeMillis() - before;
-        logger.info(before + " Done processing: " + messages.size() + ": " + delta + "ms");
         return ResultCode.OK;
     }
 
