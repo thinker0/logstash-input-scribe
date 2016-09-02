@@ -16,8 +16,6 @@ java_import 'org.apache.thrift.transport.TServerTransport'
 java_import 'org.apache.thrift.transport.TTransportException'
 java_import 'org.apache.thrift.server.THsHaServer'
 
-ARABIC_NUMBERS = Base64.decode64("2aDZodmi2aPZpNml2abZp9mo2ak=").force_encoding('UTF-8')
-
 class LogStash::Inputs::Scribe < LogStash::Inputs::Base
   class ScribeHandler < ActionScribeHandler
     # due to jruby bug, classes that subclass java classes cannot have constructor with different number of arguments
@@ -26,7 +24,7 @@ class LogStash::Inputs::Scribe < LogStash::Inputs::Base
 
     def action(messages)
         messages.each do |message|
-            text = message.getMessage().tr(ARABIC_NUMBERS,'0123456789').encode('UTF-8', :invalid   => :replace, :undef => :replace)
+            text = message.getMessage().encode('UTF-8', :invalid => :replace, :undef => :replace)
             event = LogStash::Event.new({"message" => text, "category" => message.getCategory()})
             # this will block if output_queue is full. output_queue size is 20
             @output_queue << event
@@ -90,13 +88,12 @@ class LogStash::Inputs::Scribe < LogStash::Inputs::Base
     @tServer.serve()
   end
 
-  def teardown
+  def stop
     @interrupted = true
     @handler.drain()
     if @tServer
       @tServer.stop()
       @tServer.waitForShutdown()
     end
-    finished
-  end # def teardown
+  end
 end 
