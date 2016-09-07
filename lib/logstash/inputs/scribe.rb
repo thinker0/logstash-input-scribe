@@ -30,25 +30,6 @@ class LogStash::Inputs::Scribe < LogStash::Inputs::Base
             @output_queue << event
         end
     end
-
-    #def action(message)
-    #    event = LogStash::Event.new({"message" => message.getMessage(), "category" => message.getCategory()})
-    #    @output_queue << event
-    #end
-
-    # Example for implementing "Log" directly
-    # For some reason - the client does not accept the ResultCode.OK I return here
-    # which is why I'm implementing "ActionScribeHandler" instead of implementing Log
-    # myself. If anyone knows why this is the case - I'll be happy to know.
-    # ---------------
-    #java_signature 'ResultCode Log(List<LogEntry> messages)'
-    #def Log(messages)
-    #  messages.each do |message|
-    #    event = LogStash::Event.new({"message" => message.getMessage(), "category" => message.getCategory()})
-    #    @output_queue << event
-    #  end
-    #  return ResultCode.OK
-    #end
   end
 
   config_name "scribe"
@@ -82,6 +63,7 @@ class LogStash::Inputs::Scribe < LogStash::Inputs::Base
   def run(output_queue)
     @logger.info("Running scribe server")
     # due to jruby bug, classes that subclass java classes cannot have constructor with different number of arguments
+
     @handler = ScribeHandler.new(@max_in_flight_messages)
     @handler.output_queue = output_queue
     @tServer = getServer(@host, @port, @handler)
