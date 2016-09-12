@@ -20,9 +20,6 @@ Gem::Specification.new do |s|
   # Gem dependencies
   s.add_runtime_dependency "logstash-core", ">= 2.0.0", "< 3.0.0"
 
-  s.add_runtime_dependency 'jar-dependencies'
-  s.requirements << "jar tuenti:scribe-server, 1.0"
-
   # avoids to install it on the fly when jar-dependencies needs it
   s.add_development_dependency 'ruby-maven', '~> 3.3', '>= 3.3.8'
 end
