@@ -6,26 +6,15 @@
  */
 package scribe.thrift;
 
+import org.apache.thrift.protocol.TTupleProtocol;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
-
 import org.apache.thrift.scheme.TupleScheme;
-import org.apache.thrift.protocol.TTupleProtocol;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.EnumSet;
-import java.util.Collections;
-import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 public class Scribe {
 
@@ -152,15 +141,20 @@ public class Scribe {
     }
 
     private static class Log<I extends Iface> extends org.apache.thrift.ProcessFunction<I, Log_args> {
-      public Log() {
+      Log() {
         super("Log");
       }
 
-      protected Log_args getEmptyArgsInstance() {
+      public Log_args getEmptyArgsInstance() {
         return new Log_args();
       }
 
-      protected Log_result getResult(I iface, Log_args args) throws org.apache.thrift.TException {
+      @Override
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public Log_result getResult(I iface, Log_args args) throws org.apache.thrift.TException {
         Log_result result = new Log_result();
         result.success = iface.Log(args.messages);
         return result;
