@@ -3,6 +3,8 @@ require 'base64'
 require "logstash/namespace"
 require "logstash/event"
 require "logstash/inputs/base"
+require 'logstash-input-scribe_jars.rb'
+
 java_import 'scribe.thrift.ResultCode'
 java_import 'scribe.thrift.Scribe'
 java_import 'scribe.thrift.ActionScribeHandler'

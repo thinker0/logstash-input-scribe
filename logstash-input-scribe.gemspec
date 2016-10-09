@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.requirements << "jar 'me.everything:scribe_server', '0.1.0'"
   s.add_runtime_dependency 'jar-dependencies'
-
+  # s.add_runtime_dependency 'extracted_library'
   # Gem dependencies
   s.add_runtime_dependency "logstash-core", ">= 2.0.0", "< 3.0.0"
   s.add_runtime_dependency "logstash-core-plugin-api", ">= 1.60", "<= 2.99"
